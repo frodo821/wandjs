@@ -1,9 +1,10 @@
-import {Settings, PageLoadError} from "./core";
+import {Settings} from "./core";
+import {PageLoadError, FrameworkUninitializedError} from "./errors";
 import {trigger} from "./utils/event";
 
 export function load_page(url: string) {
     let ret = {a: false};
-    load_page_async(url).then(s=>ret.a=s);
+    load_page_async(url).then(_=>{});
     return ret.a;
 }
 
@@ -13,10 +14,9 @@ export function load_page(url: string) {
  * @param option page load option
  * @returns Returns `true` if page loading was succeeded, otherwise returns `false`.
  */
-export async function load_page_async(url: string): Promise<boolean> {
+export async function load_page_async(url: string): Promise<void> {
     if(!Settings.instance.app_element) {
-        console.error('Framework never have initialized.');
-        return false;
+        throw new FrameworkUninitializedError;
     }
 
     let res = await fetch(url, {
@@ -26,31 +26,32 @@ export async function load_page_async(url: string): Promise<boolean> {
     });
 
     if(res.status != 200) {
+        let error = new PageLoadError(`Download failed with the status ${res.status}`, location.pathname, url);
         trigger(Settings.instance.app_element, {
             name: 'loadfailed',
             canBuble: true,
             cancelable: true,
-            prop: new PageLoadError('Framework is not initialized.')
+            prop: error
         });
-        return false;
+        throw error;
     }
 
     let dom = parseHTML(await res.text());
     if(!dom){
+        let error = new PageLoadError("Downloaded page doesn't have a structure same as this page.", location.pathname, url);
         trigger(Settings.instance.app_element, {
             name: 'loadfailed',
             canBuble: true,
             cancelable: true,
-            prop: new PageLoadError("Downloaded page doesn't have a structure same as this page.", location.pathname, url)
+            prop: error
         });
-        return false
+        throw error;
     };
 
     trigger(Settings.instance.app_element, 'destroy');
     Settings.instance.app_element.innerHTML = dom.innerHTML;
     trigger(Settings.instance.app_element, 'load');
     trigger(Settings.instance.app_element, 'wakeup');
-    return true;
 }
 
 /**

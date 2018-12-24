@@ -62,25 +62,3 @@ export class Settings {
         return this._app_selector || '';
     }
 }
-
-export class WandError extends Error {
-    constructor(message: any) {
-        super(`WandError:${message}`)
-    }
-}
-
-export class PageLoadError extends WandError {
-    reason: string | null;
-    frompage: string | null;
-    topage: string | null;
-
-    constructor(
-            reason: string | null = null,
-            frompage: string | null = null,
-            topage: string | null = null) {
-        super(`Page loading failed(${frompage}, ${topage}):${reason}`)
-        this.reason = reason;
-        this.frompage = frompage;
-        this.topage = topage;
-    }
-}

@@ -50,3 +50,10 @@ export function waitForEvent(element: EventTarget, event: string): Promise<Event
 export function sleep(msec: number): Promise<void> {
     return new Promise((resolve, _) => setTimeout(resolve, msec));
 }
+
+/**
+ * Wait for next animation frame update.
+ */
+export function waitForAnimationFrame(): Promise<number> {
+    return new Promise((resolve, _) => requestAnimationFrame(resolve));
+}

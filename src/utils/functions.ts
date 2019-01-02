@@ -27,3 +27,26 @@ export function getSelector(elem: Element): string {
     }
     return s.reverse().join('>');
 }
+
+/**
+ * Wait for an event.
+ * @param element Target element
+ * @param event Event type to wait
+ */
+export function waitForEvent(element: EventTarget, event: string): Promise<Event> {
+    return new Promise((resolve, _) => {
+        function hdr(evt: Event) {
+            resolve(evt);
+            element.removeEventListener(event, hdr);
+        }
+        element.addEventListener(event, hdr);
+    });
+}
+
+/**
+ * Wait specific time
+ * @param msec wait time in millisecond
+ */
+export function sleep(msec: number): Promise<void> {
+    return new Promise((resolve, _) => setTimeout(resolve, msec));
+}

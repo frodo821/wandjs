@@ -5,7 +5,8 @@ import * as navigation from './navigation';
 import * as spa from './pageLoader';
 import * as events from './utils/event';
 import * as functions from './utils/functions';
-import { Wand } from "./wand";
+import {Wand} from "./wand";
+import * as extensions from './extensions';
 
 function __wand(app: string | Element, mode?: AppMode): void {
     setup(app, mode);
@@ -13,6 +14,7 @@ function __wand(app: string | Element, mode?: AppMode): void {
 
 export const wand = Object.assign(__wand, {
     Settings: Settings,
+    Extension: extensions.Extension,
     errors: errors,
     setup: setup,
     register_navigator: navigation.register_navigator,

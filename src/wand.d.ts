@@ -21,6 +21,10 @@ declare module WandCoreModule {
     class Settings {}
 }
 
+declare module WandExtensionModule {
+    class Extension {}
+}
+
 declare interface WandEventModule {
     trigger(elem: Element, option: EventArg | string): void;
 }
@@ -34,6 +38,7 @@ declare interface Wand {
     register_navigator(): void;
     spa: WandSPAModule;
     Settings: WandCoreModule.Settings;
+    Extension: WandExtensionModule.Extension;
     errors: any;
     events: WandEventModule;
     functions: WandFunctionModule;

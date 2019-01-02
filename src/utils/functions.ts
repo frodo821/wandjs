@@ -36,8 +36,8 @@ export function getSelector(elem: Element): string {
 export function waitForEvent(element: EventTarget, event: string): Promise<Event> {
     return new Promise((resolve, _) => {
         function hdr(evt: Event) {
-            resolve(evt);
             element.removeEventListener(event, hdr);
+            resolve(evt);
         }
         element.addEventListener(event, hdr);
     });

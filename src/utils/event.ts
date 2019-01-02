@@ -1,4 +1,4 @@
-type EventArg = {
+export type EventArg = {
     name: string,
     canBuble: boolean,
     cancelable: boolean,

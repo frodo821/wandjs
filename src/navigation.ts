@@ -7,11 +7,14 @@ export function register_navigator() {
                     'click',
                     function(ev) {
                         ev.preventDefault();
+                        ev.stopPropagation();
                         navigate(elem.getAttribute('href') || '');
+                        return false;
                     });
             });
 }
 
 function navigate(url: string) {
+    console.log('navigating');
     load_page_async(url);
 }

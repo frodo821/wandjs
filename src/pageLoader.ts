@@ -11,13 +11,14 @@ export function load_page(url: string) {
 /**
  * Load a page asynchronously.
  * @param url Destination url
- * @param option page load option
  * @returns Returns `true` if page loading was succeeded, otherwise returns `false`.
  */
 export async function load_page_async(url: string): Promise<void> {
     if(!Settings.instance.app_element) {
         throw new FrameworkUninitializedError;
     }
+
+    trigger(Settings.instance.app_element, 'prepareload');
 
     let res = await fetch(url, {
         credentials: 'include',

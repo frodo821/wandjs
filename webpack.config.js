@@ -1,20 +1,20 @@
 module.exports = {
     entry: {
-        twigjs: "./src/index.ts"
+        wand: "./src/wand.js"
     },
     output: {
         path: `${__dirname}/dist`,
         filename: '[name].js'
     },
     resolve: {
-        extensions: ['ts', 'js']
+        extensions: ['.ts', '.js']
     },
     module: {
-        rules: {
+        rules: [
             {
                 test: /\.ts$/,
                 loader: 'ts-loader'
             }
-        }
+        ]
     }
 };

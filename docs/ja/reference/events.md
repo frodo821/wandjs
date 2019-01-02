@@ -4,6 +4,9 @@
   - [destroy](#destroy)
   - [load](#load)
   - [loadfailed](#loadfailed)
+  - [latetick](#latetick)
+  - [prepareload](#prepareload)
+  - [tick](#tick)
   - [wakeup](#wakeup)
 
 ![lifecycle](../../lifecycle.png)
@@ -16,6 +19,15 @@
 
 ## loadfailed
 ページのロードに失敗したときに発生するイベント。`Event.detail`に[`PageLoadError`](errors.md#pageloaderror)のインスタンスがセットされる。
+
+## latetick
+毎フレーム、[`tick`](#tick)イベントの後に発生するイベント。
+
+## prepareload
+ページのロードを開始するときに発生するイベント。
+
+## tick
+毎フレーム発生するイベント。`requestAnimationFrame`のタイミングで発生する。
 
 ## wakeup
 フレームワークが初期化されたときに発生するイベント。

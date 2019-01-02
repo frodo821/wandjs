@@ -2,10 +2,12 @@ import {Settings} from "./core";
 import {PageLoadError, FrameworkUninitializedError} from "./errors";
 import {trigger} from "./utils/event";
 
+/**
+ * Load page, but don't wait page loading.
+ * @param url Destination url
+ */
 export function load_page(url: string) {
-    let ret = {a: false};
-    load_page_async(url).then(_=>{});
-    return ret.a;
+    load_page_async(url).then(_=>{})
 }
 
 /**

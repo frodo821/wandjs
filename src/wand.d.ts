@@ -2,7 +2,7 @@ import {AppMode} from './core';
 import {EventArg} from './utils/event';
 
 declare interface WandSPAModule {
-    load_page(url: string): boolean;
+    load_page(url: string): void;
     load_page_async(url: string): Promise<void>;
     parseHTML(src: string, raw?:boolean): Element | null;
 }

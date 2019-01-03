@@ -2,9 +2,10 @@ import {AppMode} from './core';
 import {EventArg} from './utils/event';
 
 declare interface WandSPAModule {
-    load_page(url: string): void;
-    load_page_async(url: string): Promise<void>;
+    load_page(url: string, force?: boolean): void;
+    load_page_async(url: string, force?: boolean): Promise<void>;
     parseHTML(src: string, raw?:boolean): Element | null;
+    purge(): void;
 }
 
 declare module WandErrorModule {

@@ -2,54 +2,43 @@ import {Settings} from "./core";
 import {PageLoadError, FrameworkUninitializedError} from "./errors";
 import {trigger} from "./utils/event";
 
+var cache: {[key: string]: Element} = {};
+
 /**
  * Load page, but don't wait page loading.
  * @param url Destination url
+ * @param force If true, this function will force reload page.
  */
-export function load_page(url: string) {
-    load_page_async(url).then(_=>{})
+export function load_page(url: string, force: boolean = false) {
+    load_page_async(url, force).then(_=>{})
 }
 
 /**
  * Load a page asynchronously.
  * @param url Destination url
+ * @param force If true, this function will force reload page.
  * @returns Returns `true` if page loading was succeeded, otherwise returns `false`.
  */
-export async function load_page_async(url: string): Promise<void> {
+export async function load_page_async(url: string, force: boolean = false): Promise<void> {
     if(!Settings.instance.app_element) {
         throw new FrameworkUninitializedError;
     }
 
     trigger(Settings.instance.app_element, 'prepareload');
 
-    let res = await fetch(url, {
-        credentials: 'include',
-        redirect: 'follow',
-        cache: "no-store"
-    });
-
-    if(res.status != 200) {
-        let error = new PageLoadError(`Download failed with the status ${res.status}`, location.pathname, url);
+    try {
+        var dom = await _getcontent(url, force);
+    } catch(error) {
         trigger(Settings.instance.app_element, {
             name: 'loadfailed',
             canBuble: true,
             cancelable: true,
             prop: error
         });
-        throw error;
+        return;
     }
 
-    let dom = parseHTML(await res.text());
-    if(!dom){
-        let error = new PageLoadError("Downloaded page doesn't have a structure same as this page.", location.pathname, url);
-        trigger(Settings.instance.app_element, {
-            name: 'loadfailed',
-            canBuble: true,
-            cancelable: true,
-            prop: error
-        });
-        throw error;
-    };
+    history.pushState(null, '', url);
 
     trigger(Settings.instance.app_element, 'destroy');
     Settings.instance.app_element.innerHTML = dom.innerHTML;
@@ -68,4 +57,38 @@ export function parseHTML(src: string, raw: boolean = false): Element | null {
     if(raw)
         return h;
     return h.querySelector(Settings.instance.app_selector);
+}
+
+/**
+ * Purge all cached pages.
+ */
+export function purge() {
+    Object.keys(cache).forEach(name => {
+        delete cache[name];
+    });
+}
+
+async function _getcontent(url: string, force: boolean): Promise<Element> {
+    if(!force && cache.hasOwnProperty(url)) {
+        return cache[url];
+    }
+
+    let res = await fetch(url, {
+        credentials: 'include',
+        redirect: 'follow',
+        cache: "no-store"
+    });
+
+    if(res.status != 200) {
+        throw new PageLoadError(`Download failed with the status ${res.status}`, location.pathname, url);
+    }
+
+    let dom = parseHTML(await res.text());
+
+    if(!dom) {
+        throw new PageLoadError("Downloaded page doesn't have a structure same as this page.", location.pathname, url);
+    }
+
+    cache[url] = dom;
+    return dom;
 }

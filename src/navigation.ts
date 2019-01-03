@@ -13,11 +13,13 @@ export function register_navigator() {
                     });
             });
     window.addEventListener('popstate', ev=>{
-        navigate(location.pathname);
+        ev.stopPropagation();
+        ev.preventDefault();
+        navigate(location.pathname, true);
     });
 }
 
-function navigate(url: string) {
+function navigate(url: string, onpopstate: boolean = false) {
     console.log('navigating to '+url);
-    load_page_async(url);
+    load_page_async(url, {onpopstate: onpopstate});
 }

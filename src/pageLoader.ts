@@ -2,32 +2,39 @@ import {Settings} from "./core";
 import {PageLoadError, FrameworkUninitializedError} from "./errors";
 import {trigger} from "./utils/event";
 
+export type LoadOption = {
+    force?: boolean,
+    onpopstate?: boolean
+}
+
 var cache: {[key: string]: Element} = {};
 
 /**
  * Load page, but don't wait page loading.
  * @param url Destination url
- * @param force If true, this function will force reload page.
+ * @param option page load options
  */
-export function load_page(url: string, force: boolean = false) {
-    load_page_async(url, force).then(_=>{})
+export function load_page(url: string, option?: LoadOption) {
+    load_page_async(url, option).then(_=>{})
 }
 
 /**
  * Load a page asynchronously.
  * @param url Destination url
- * @param force If true, this function will force reload page.
+ * @param option page load options
  * @returns Returns `true` if page loading was succeeded, otherwise returns `false`.
  */
-export async function load_page_async(url: string, force: boolean = false): Promise<void> {
+export async function load_page_async(url: string, option?: LoadOption): Promise<void> {
     if(!Settings.instance.app_element) {
         throw new FrameworkUninitializedError;
     }
 
+    option = option || {force: false, onpopstate: false};
+
     trigger(Settings.instance.app_element, 'prepareload');
 
     try {
-        var dom = await _getcontent(url, force);
+        var dom = await _getcontent(url, option.force || false);
     } catch(error) {
         trigger(Settings.instance.app_element, {
             name: 'loadfailed',
@@ -38,7 +45,8 @@ export async function load_page_async(url: string, force: boolean = false): Prom
         return;
     }
 
-    history.pushState(null, '', url);
+    if(!option.onpopstate)
+        history.pushState(null, '', url);
 
     trigger(Settings.instance.app_element, 'destroy');
     Settings.instance.app_element.innerHTML = dom.innerHTML;

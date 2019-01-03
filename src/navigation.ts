@@ -12,12 +12,12 @@ export function register_navigator() {
                         return false;
                     });
             });
-    window.addEventListener('popstate', _=>{
+    window.addEventListener('popstate', ev=>{
         navigate(location.pathname);
     });
 }
 
 function navigate(url: string) {
-    console.log('navigating');
+    console.log('navigating to '+url);
     load_page_async(url);
 }

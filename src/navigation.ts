@@ -12,6 +12,9 @@ export function register_navigator() {
                         return false;
                     });
             });
+    window.addEventListener('popstate', _=>{
+        navigate(location.pathname);
+    });
 }
 
 function navigate(url: string) {

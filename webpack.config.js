@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        wand: "./src/wand.js"
+        wand: "./src/wand.js",
         'wand.extensions': "./src/extensions/extension.js"
     },
     output: {

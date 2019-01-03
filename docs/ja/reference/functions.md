@@ -1,3 +1,7 @@
+---
+title: ユーティリティ関数 wand.js日本語リファレンス
+---
+
 # ユーティリティ関数
 
 ## getSelector(elem: Element): string

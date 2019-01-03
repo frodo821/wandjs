@@ -1,3 +1,7 @@
+---
+title: wand.jsの始め方 wand.js日本語リファレンス
+---
+
 # wand.jsの始め方
 
 ## 導入しよう

@@ -1,4 +1,3 @@
-import { wand } from '../index';
 import { FrameworkUninitializedError } from "../errors";
 
 export class Extension {
@@ -6,15 +5,16 @@ export class Extension {
 
     constructor(name: string) {
         this.name = name;
-        let e = wand.Settings.instance.app_element;
+        let e = (window as any).wand.Settings.instance.app_element as Element;
         if(!e)
             throw new FrameworkUninitializedError;
-        e.addEventListener('wakeup', this.onWakeup);
-        e.addEventListener('load', this.onLoad);
-        e.addEventListener('prepareload', this.onPrepareLoad);
-        e.addEventListener('destroy', this.onDestroy);
-        e.addEventListener('tick', this.onTick);
-        e.addEventListener('latetick', this.onLateTick);
+        console.log(JSON.stringify(this));
+        e.addEventListener('wakeup', this.onWakeup.bind(this));
+        e.addEventListener('load', this.onLoad.bind(this));
+        e.addEventListener('prepareload', this.onPrepareLoad.bind(this));
+        e.addEventListener('destroy', this.onDestroy.bind(this));
+        e.addEventListener('tick', this.onTick.bind(this));
+        e.addEventListener('latetick', this.onLateTick.bind(this));
     }
 
     /**

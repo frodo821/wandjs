@@ -1,4 +1,4 @@
-import { Settings } from "../core";
+import { wand } from '../index';
 import { FrameworkUninitializedError } from "../errors";
 
 export class Extension {
@@ -6,7 +6,7 @@ export class Extension {
 
     constructor(name: string) {
         this.name = name;
-        let e = Settings.instance.app_element;
+        let e = wand.Settings.instance.app_element;
         if(!e)
             throw new FrameworkUninitializedError;
         e.addEventListener('wakeup', this.onWakeup);

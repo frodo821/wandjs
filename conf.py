@@ -77,8 +77,6 @@ exclude_patterns = [
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
-primary_domain = 'js'
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -185,3 +183,5 @@ epub_exclude_files = ['search.html']
 
 # -- Extension configuration -------------------------------------------------
 js_source_path = './src'
+js_language = 'typescript'
+root_for_relative_js_paths = '.'

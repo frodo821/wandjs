@@ -77,7 +77,7 @@ export function purge() {
 }
 
 async function _getcontent(url: string, force: boolean): Promise<Element> {
-    if(!force && cache.hasOwnProperty(url)) {
+    if(force && cache.hasOwnProperty(url)) {
         return cache[url];
     }
 

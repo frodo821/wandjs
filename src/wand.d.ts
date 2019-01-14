@@ -19,7 +19,12 @@ declare interface WandNavigationModule {
 }
 
 declare module WandCoreModule {
-    class Settings {}
+    class Settings {
+        instance: {
+            app_element: HTMLElement,
+            app_selector: string
+        }
+    }
 }
 
 declare module WandExtensionModule {

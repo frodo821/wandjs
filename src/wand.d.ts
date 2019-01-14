@@ -21,7 +21,7 @@ declare interface WandNavigationModule {
 declare module WandCoreModule {
     class Settings {
         instance: {
-            app_element: HTMLElement,
+            app_element: Element,
             app_selector: string
         }
     }

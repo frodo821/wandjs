@@ -5,8 +5,9 @@ import * as navigation from './navigation';
 import * as spa from './pageLoader';
 import * as events from './utils/event';
 import * as functions from './utils/functions';
-import {Wand} from "./wand";
 import * as extensions from './extensions';
+
+interface Wand {}
 
 function __wand(app: string | Element, mode?: AppMode): void {
     setup(app, mode);
